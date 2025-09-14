@@ -14,6 +14,7 @@
         button:hover { background-color: #0056b3; }
         #result { margin-top: 10px; color: #333; }
         .error { color: red; }
+        .result-input { width: 100%; padding: 8px; margin-top: 5px; }
     </style>
 </head>
 <body>
@@ -45,34 +46,42 @@
         document.getElementById('encrypt-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const response = await fetch('/encrypt', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            const resultDiv = document.getElementById('encrypt-result');
-            resultDiv.innerHTML = '';
-            if (result.error) {
-                resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
-            } else {
-                resultDiv.innerHTML = `Encrypted: <input type="text" value="${result.encrypted}" readonly style="width: 100%; padding: 8px;">`;
+            try {
+                const response = await fetch('/encrypt', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                const resultDiv = document.getElementById('encrypt-result');
+                resultDiv.innerHTML = '';
+                if (result.error) {
+                    resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
+                } else {
+                    resultDiv.innerHTML = `Encrypted: <input type="text" class="result-input" value="${result.encrypted}" readonly>`;
+                }
+            } catch (error) {
+                document.getElementById('encrypt-result').innerHTML = `<span class="error">Error: ${error.message}</span>`;
             }
         });
 
         document.getElementById('decrypt-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(e.target);
-            const response = await fetch('/decrypt', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            const resultDiv = document.getElementById('decrypt-result');
-            resultDiv.innerHTML = '';
-            if (result.error) {
-                resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
-            } else {
-                resultDiv.innerHTML = `Decrypted: <input type="text" value="${result.decrypted}" readonly style="width: 100%; padding: 8px;">`;
+            try {
+                const response = await fetch('/decrypt', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                const resultDiv = document.getElementById('decrypt-result');
+                resultDiv.innerHTML = '';
+                if (result.error) {
+                    resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
+                } else {
+                    resultDiv.innerHTML = `Decrypted: <input type="text" class="result-input" value="${result.decrypted}" readonly>`;
+                }
+            } catch (error) {
+                document.getElementById('decrypt-result').innerHTML = `<span class="error">Error: ${error.message}</span>`;
             }
         });
     </script>
