@@ -13,6 +13,7 @@
         button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
         button:hover { background-color: #0056b3; }
         #result { margin-top: 10px; color: #333; }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -50,10 +51,11 @@
             });
             const result = await response.json();
             const resultDiv = document.getElementById('encrypt-result');
+            resultDiv.innerHTML = '';
             if (result.error) {
-                resultDiv.innerHTML = `<span style="color: red;">${result.error}</span>`;
+                resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
             } else {
-                resultDiv.innerHTML = `Encrypted: ${result.encrypted}`;
+                resultDiv.innerHTML = `Encrypted: <input type="text" value="${result.encrypted}" readonly style="width: 100%; padding: 8px;">`;
             }
         });
 
@@ -66,10 +68,11 @@
             });
             const result = await response.json();
             const resultDiv = document.getElementById('decrypt-result');
+            resultDiv.innerHTML = '';
             if (result.error) {
-                resultDiv.innerHTML = `<span style="color: red;">${result.error}</span>`;
+                resultDiv.innerHTML = `<span class="error">${result.error}</span>`;
             } else {
-                resultDiv.innerHTML = `Decrypted: ${result.decrypted}`;
+                resultDiv.innerHTML = `Decrypted: <input type="text" value="${result.decrypted}" readonly style="width: 100%; padding: 8px;">`;
             }
         });
     </script>
